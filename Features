@@ -1,0 +1,78 @@
+#Superset Örnek Veri Tabanı ve Tablosu Oluşturma ve Görselleştirme
+
+Örnek veriler oracle server üzerinden çekilecek olup bunun için Centos7 üzerine gerekli kurulumlar yapılması gereklidir. 
+
+https://oracle.github.io/odpi/doc/installation.html#linux burada bulunan adımlar takip edilerek Oracle database kurulur. 
+
+Ardından superset run -h 10.254.183.28 -p 8080 --with-threads --reload –debugger bu komut ile birlikte başlattığımız superset’e host üzerinden erişim sağlanılarak User Name ve Password bilgileri girişinden sonra veriyi bağlama işlemini gerçekleştirebiliriz.
+
+Tablo oluşturabilmek için öncelikle bir veritabanı oluşturmamız gerekiyor. Bunun için Sources > Databases yolu izlenir.
+
+Database yerine veri tabanı için istediğiniz isim verilebilir. SQLAlchemy URI için kendine ait bir syntaxı bulunuyor. Bu adresten https://docs.sqlalchemy.org/en/12/core/engines.html#database-urls gerekli bilgilere erişebiliriz. Biz oracle veritabanı oluşturacağımız için söz dizimi şu şekilde olacaktır “oracle://scott:tiger@127.0.0.1:1521/sidname”. Bizim için gerekli URI şu şekilde oracle://netasbi:XXXXXXXXXX@10.254.183.29:1521/netas kullanılmıştır. Ardından bağlanıp bağlanmadığı Test Connection butonu ile birlikte kontrol edilebilir. 
+
+Veritabanı bağlama işlemi tamamlandıktan sonra tablo oluşturulur. Sources > Tables yolu izlenir. Database seçilir. Schema yazılır. Table Name yazılır ve işlem bitirilir. Herhangi bir hata vermezse tables sayfasından oluşturduğumuz Tabloya ulaşabiliriz.
+
+Tabloyu görselleştirmek istediğimiz zaman üstüne tıklayarak Chart Type seçimine bağlı her bir chart için kayıt tutabiliriz. 
+
+Kayıtlı olan chart kısmına Charts menüsünden ulaşılabilir. 
+
+Dashboard kısmı ise kayıtlı Chartların aynı veri için analizleri tek bir sayfa gösterilmesi istendiği zaman kullanılır. 
+
+SQL Lab menüsünde SQL sorgularıyla birlikte verimiz üzerinde sorgularak yaparak gerekli olan çıktıları aldırabiliriz. 
+
+Superset Menüler
+
+Security: Kullanıcıların sınıflandırıldığı, kullanıcılara özel izinlerin verilebildiği, logların tutulduğu bir alan olarak belirlenmiştir.
+
+Sources: Table, Database, CSV dosyalarını import edebildiğimiz menüdür.
+
+Charts: Mevcut tablo üzerinde yaptığımız grafik işlemleriyle birlikte kaydını tutan menüdür. 
+
+Dashboards: Mevcut tablo üzerinde yaptığımız grafik işlemini tablodan ayırmak için sadece grafiksel bir düzen şeklinde farklı yerde saklayacağımız menüdür. 
+
+SQL LAB: Veri tabanı, schema, tablo isimlerine bağlı olarak SQL sorgularının gerçekleştirildiği menüdür. Eski sorgulara ulaşılabilir. Sürekli kullanılacak olan sorgu kayıt edilebilir.
+
+EK BİLGİLER
+
+Veri tabanını bağlama aşamasında gerekli olan database ismi, SQLAlchemy URI girildikten sonra isteğe bağlı olarak tablo üzerine izinler verilebilir. Örneğin:
+
+•	SQL Lab üzerinde “CREATE TABLE AS” sorgusu yazdırılabilir. Normalde sadece SELECT sorgusu çalışmaktadır.
+•	CSV Upload edilebilir.
+•	SQL Lab üzerinde gösterip göstermeme checkbox ile değiştirilebilir.
+
+Upload a CSV işlemi yaparken tablo ismi girişi yapılmalı, dosya seçilmeli ardından tablonun ayraçları belirtilerek tablo düzenli hale getirilmelidir. İzin verilen databaselere upload edilmektedir.
+
+Her görselleştirme tipinde farklı parametreler alarak, parametrelere bağlı olarak sorgular sonuçlandırılmaktadır. Genel olarak kullanılan paremetreler: Metrics, Filters, Series, Group By’dır.
+
+Sources menüsü altında bulunan Druid ile ilgili seçeneklerle işlem yapılmamıştır.
+
+KARŞILAŞILAN SORUNLAR
+
+Python2.7 versiyonu desteklemediği için Python3.+ sürümü kurulumu yapılmıştır.
+
+Fazla verili ortamlarda çalışırken sorgulardan dönen sonuçlar çok geç gelmekte makineyi kastırmaktadır.
+
+Aynı zamanda dashboards kısmına gönderebildiğimiz sorgulanmış görselleştirmeler burada da donmalara sebep olmaktadır. Sayfanın boyutları değiştirildiğinde orada bulunan görselleştirmeyi aynı oranda küçültme gereksinimi duyduğu için donmalar devam etmektedir. 
+
+Tablo oluşturma ekranında Database seçilir fakat Schema ve Table Name kısımları el ile giriş yapılması gerekir.
+
+Null değer gelmesi halinde görselleştirme tipleri her türlü hata vermektedir. Bu yüzden Filter olarak belirtilen yere “NOT NULL” filtresi eklenmelidir. Ya da veri düzenli hale getirilip o şekilde görselleştirme yapılmalıdır.
+
+Görselleştirme tiplerine bağlı olarak değişen parametre değişimleriyle birlikte parametreleri nasıl dolduracağımız bir sorun oluşturmuştur. Bu sorunların önüne başta SQL sorgularını kısıtlama ve onun üzerinde görselleştirme yaparak sağlamaya çalışsakta sonradan parametreleri kavrayarak gerekli olan görselleştirmeler yapılmıştır.
+
+Farklı databaseler arasında merge, join işlemi yapılamamaktadır. Tek database seçilerek farklı schemalar ile bu işlem gerçekleştirilebilir.
+
+Görselleştirme ekranında sorgu kısmında bulunan Time default olarak Last Week olarak ayarlanmıştır bu seçeneği değiştirmediğimiz takdirde eğer son hafta veri girişi yapılmamışsa null olarak ekranımıza çıktı verecektir.
+
+DRUID
+
+1.	Sütunlu depolama formatı. Druid, sütun odaklı depolamayı kullanır, yani yalnızca belirli bir sorgu için gereken tam sütunları yüklemesi gerekir. Bu, yalnızca birkaç sütuna çarpan sorgulara büyük bir hız kazandırır. Ek olarak, her sütun, hızlı taramaları ve toplamaları destekleyen kendi veri türü için optimize edilmiştir.
+2.	Ölçeklenebilir dağıtık sistem. Druid tipik olarak on ila yüzlerce sunucu kümesinde dağıtılır ve milyonlarca kayıt / sn'lik alım oranları, trilyonlarca kayıt tutma ve alt saniyeden birkaç saniyeye kadar sorgu gecikme süresi sunabilir.
+3.	Büyük ölçüde paralel işleme. Druid bir sorguyu tüm küme boyunca paralel olarak işleyebilir.
+4.	Gerçek zamanlı veya toplu alım. Druid, verileri gerçek zamanlı olarak alabilir (alınan veriler sorgulama için hemen kullanılabilir durumdadır) veya gruplar halinde.
+5.	Kendiliğinden iyileşen, kendini dengeleyen, kullanımı kolay. Bir işleç olarak, kümeyi dışarı veya içeriye ölçeklendirmek için, basitçe sunucuları ekleyin veya çıkarın; küme, arka planda hiçbir kesinti olmadan otomatik olarak kendini yeniden dengeleyecektir. Herhangi bir Druid sunucusu arızalanırsa, sistem bu sunucular değiştirilinceye kadar hasarın etrafında otomatik olarak yönlendirilir. Druid, yapılandırma değişiklikleri ve yazılım güncellemeleri de dahil olmak üzere herhangi bir nedenle planlanan aksama sürelerine gerek kalmadan 7/24 çalışacak şekilde tasarlanmıştır.
+6.	Bulgulara özgü, veri kaybetmeyecek, hataya dayanıklı mimari. Druid verilerinizi aldıktan sonra, bir kopya güvenli bir şekilde derin depolama alanında (tipik olarak bulut depolama, HDFS veya paylaşılan bir dosya sistemi) depolanır . Her bir Druid sunucusu arızalansa bile verileriniz derin depolamadan kurtarılabilir. Yalnızca birkaç Druid sunucusunu etkileyen daha sınırlı hatalar için, çoğaltma, sistem kurtarılırken sorguların hala mümkün olmasını sağlar.
+7.	Hızlı filtreleme için dizinler. Druid, hızlı filtrelemeye ve birden fazla sütun arasında arama yapmaya neden olan dizinler oluşturmak için CONCISE veya Kükreyen sıkıştırılmış bitmap dizinlerini kullanır .
+8.	Zamana dayalı bölümleme. Druid, verileri zamana göre bölümler ve ayrıca diğer alanlara göre bölümleme yapabilir. Bu, zamana dayalı sorguların yalnızca sorgunun zaman aralığına uyan bölümlere erişeceği anlamına gelir. Bu, zamana dayalı veriler için önemli performans iyileştirmeleri sağlar.
+9.	Yaklaşık algoritmalar. Druid, yaklaşık sayma ayrımı, yaklaşık sıralama ve yaklaşık histogramların ve kuantumların hesaplanması için algoritmalar içerir. Bu algoritmalar sınırlı bellek kullanımı sunar ve genellikle kesin hesaplamalardan çok daha hızlıdır. Doğruluğun hızdan daha önemli olduğu durumlar için, Druid ayrıca kesin sayım ve kesin sıralama sunar.
+10.	Giriş anında otomatik özetleme. Druid isteğe bağlı olarak alım zamanında veri özetlemesini destekler. Bu özetleme, verilerinizi kısmen önceden toplar ve büyük maliyet tasarruflarına ve performans artışlarına yol açabilir.
