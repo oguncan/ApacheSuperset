@@ -78,9 +78,9 @@ superset init komut satırı ile birlikte hazır roller ve izinler verilir.
 
 en son olarak yapacağımız işlemde port açılarak arayüze giriş yapılabilir. 
 
-superset run -h 10.254.183.28 -p 8080 --with-threads --reload --debugger
+superset run -h 10.***.***.** -p 8080 --with-threads --reload --debugger
 
-yapılarak localhost:8080/ portuna girilebilir. ( Bizim için 10.254.183.28:8080/ adresidir.)
+yapılarak localhost:8080/ portuna girilebilir. ( Bizim için 10.***.***.**:8080/ adresidir.)
 
 Firewall servislerini devre dışı bırakmamız gerecektir bu yüzden 
 
