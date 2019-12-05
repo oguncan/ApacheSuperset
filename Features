@@ -8,7 +8,7 @@ Ardından superset run -h 10.** -p 8080 --with-threads --reload –debugger bu k
 
 Tablo oluşturabilmek için öncelikle bir veritabanı oluşturmamız gerekiyor. Bunun için Sources > Databases yolu izlenir.
 
-Database yerine veri tabanı için istediğiniz isim verilebilir. SQLAlchemy URI için kendine ait bir syntaxı bulunuyor. Bu adresten https://docs.sqlalchemy.org/en/12/core/engines.html#database-urls gerekli bilgilere erişebiliriz. Biz oracle veritabanı oluşturacağımız için söz dizimi şu şekilde olacaktır “oracle://scott:tiger@127.0.0.1:1521/sidname”. Bizim için gerekli URI şu şekilde oracle://netasbi:XXXXXXXXXX@10.254.183.29:1521/netas kullanılmıştır. Ardından bağlanıp bağlanmadığı Test Connection butonu ile birlikte kontrol edilebilir. 
+Database yerine veri tabanı için istediğiniz isim verilebilir. SQLAlchemy URI için kendine ait bir syntaxı bulunuyor. Bu adresten https://docs.sqlalchemy.org/en/12/core/engines.html#database-urls gerekli bilgilere erişebiliriz. Biz oracle veritabanı oluşturacağımız için söz dizimi şu şekilde olacaktır “oracle://scott:tiger@127.0.0.1:1521/sidname”. Bizim için gerekli URI şu şekilde oracle://netasbi:XXXXXXXXXX@10.***:1521/netas kullanılmıştır. Ardından bağlanıp bağlanmadığı Test Connection butonu ile birlikte kontrol edilebilir. 
 
 Veritabanı bağlama işlemi tamamlandıktan sonra tablo oluşturulur. Sources > Tables yolu izlenir. Database seçilir. Schema yazılır. Table Name yazılır ve işlem bitirilir. Herhangi bir hata vermezse tables sayfasından oluşturduğumuz Tabloya ulaşabiliriz.
 
