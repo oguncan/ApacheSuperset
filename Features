@@ -4,7 +4,7 @@
 
 https://oracle.github.io/odpi/doc/installation.html#linux burada bulunan adımlar takip edilerek Oracle database kurulur. 
 
-Ardından superset run -h 10.254.183.28 -p 8080 --with-threads --reload –debugger bu komut ile birlikte başlattığımız superset’e host üzerinden erişim sağlanılarak User Name ve Password bilgileri girişinden sonra veriyi bağlama işlemini gerçekleştirebiliriz.
+Ardından superset run -h 10.** -p 8080 --with-threads --reload –debugger bu komut ile birlikte başlattığımız superset’e host üzerinden erişim sağlanılarak User Name ve Password bilgileri girişinden sonra veriyi bağlama işlemini gerçekleştirebiliriz.
 
 Tablo oluşturabilmek için öncelikle bir veritabanı oluşturmamız gerekiyor. Bunun için Sources > Databases yolu izlenir.
 
